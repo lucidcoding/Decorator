@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   namespace="Decorator.Domain.Entities"
+                   assembly="Decorator.Domain">
+  <class name="IPizza" abstract="true">
+    <id name="Id" column="Id" type="guid">
+      <generator class="assigned"/>
+    </id>
+    <many-to-one name="Order" class="Order" column="`OrderId`" cascade="save-update" />
+    
+    <union-subclass name="Pizza" table ="`Pizza`" >
+      <property name="Size" column="`Size`" />
+      <property name="Cheese" />
+      <property name="Tomato" />
+    </union-subclass>
+
+    <union-subclass name="PepperoniDecorator" table ="`PepperoniDecorator`" >
+      <many-to-one name="BasePizza" class="IPizza" column="`BasePizzaId`" cascade="all" />
+      <property name="ExtraSpicy" column="`ExtraSpicy`" />
+    </union-subclass>
+
+    <union-subclass name="OliveDecorator" table ="`OliveDecorator`" >
+      <many-to-one name="BasePizza" class="IPizza" column="`BasePizzaId`" cascade="all" />
+      <property name="Colour" column="`Colour`" />
+    </union-subclass>
+  </class>
+</hibernate-mapping>
+
